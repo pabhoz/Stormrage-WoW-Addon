@@ -23,7 +23,7 @@ Stormrage = Stormrage or {}
 
 local VERSION = 1
 local SITE = "stormrage-server.com"
-local ICON = "Interface\\Icons\\INV_Weapon_Glaive_01" -- the Warglaive of Azzinoth
+local ICON = "Interface\\Icons\\INV_Weapon_Glave_01" -- the Warglaive of Azzinoth (Blizzard spells it "Glave")
 
 local L = setmetatable({}, { __index = function(_, k) return k end })
 local locale = GetLocale()
