@@ -1,0 +1,11 @@
+## Interface: 30300
+## Title: Stormrage
+## Notes: One minimap button for every Stormrage addon (Soulstone, Smart Cast, Tactics Coach...).
+## Notes-esES: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...).
+## Notes-esMX: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...).
+## Author: pabhoz
+## Version: 1.0.0
+## X-License: GPL-3.0-or-later
+## X-Website: https://github.com/pabhoz/Stormrage-WoW-Addon
+## SavedVariables: StormrageHubDB
+Stormrage.lua
