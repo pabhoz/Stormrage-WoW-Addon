@@ -16,6 +16,12 @@
 
 **ES** — Instálalo junto a [Soulstone](https://github.com/pabhoz/Soulstone-WoW-Addon), [Smart Cast](https://github.com/pabhoz/SmartCast-WoW-Addon) y [Tactics Coach](https://github.com/pabhoz/TacticsCoach-WoW-Addon) y dejan de poner un botón cada uno: un solo botón ⚔️ abre un menú con todos, sus acciones rápidas (guardar tu personaje, copiar las barras de un spec al otro, elegir los hechizos de Smart Cast…) y el sitio del reino. Sin él, cada addon conserva su botón como siempre. `/stormrage` abre el menú y `/stormrage minimap` oculta el botón.
 
+## Talent profiles / Perfiles de talentos
+
+**EN** — On the Stormrage realm, *Talent profiles* (in the menu, `/perfiles`, or the book tab on the talent window) saves your active spec (talents, glyphs and action bars) under a name and loads it back over your active spec later. The client keeps its two specs; profiles are a library on top of them, stored on the realm. It talks to the server through AzerothCore's addon command channel (`.perfil` from `mod-stormrage-loadouts`), so nothing shows in the chat. On other realms the window just says the realm has no profiles.
+
+**ES** — En el reino Stormrage, *Perfiles de talentos* (en el menú, con `/perfiles` o con la pestaña del libro en la ventana de talentos) guarda tu spec activa (talentos, glifos y barras) con un nombre y la vuelve a cargar sobre tu spec activa cuando quieras. El cliente conserva sus dos specs; los perfiles son una biblioteca encima de ellas, guardada en el reino. Habla con el servidor por el canal de comandos de addon de AzerothCore (`.perfil` de `mod-stormrage-loadouts`), así que no aparece nada en el chat. En otros reinos la ventana solo avisa que el reino no tiene perfiles.
+
 ## For addon authors / Para autores de addons
 
 Any addon can join the menu. Add `## OptionalDeps: Stormrage` to your `.toc` and, once your saved variables are loaded:

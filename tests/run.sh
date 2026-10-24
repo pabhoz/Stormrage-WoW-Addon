@@ -5,4 +5,4 @@ cd "$(dirname "$0")/.."
 docker run --rm -v "$PWD":/a -w /a alpine:3.20 sh -c '
   apk add -q lua5.1 >/dev/null
   for f in *.lua tests/*.lua; do luac5.1 -p "$f" || exit 1; done
-  lua5.1 tests/run.lua'
+  lua5.1 tests/run.lua && lua5.1 tests/loadouts.lua'
