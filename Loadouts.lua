@@ -45,7 +45,7 @@ Stormrage.Loadouts = Loadouts
 local PREFIX = "AzerothCore"
 local TIMEOUT = 6
 local MAX_ROWS = 10
-local ICON = "Interface\\Icons\\INV_Misc_Book_11"
+local ICON = "Interface\\Icons\\Ability_Stealth"
 local WIDTH = 380
 
 local profiles, maxProfiles = {}, 0
