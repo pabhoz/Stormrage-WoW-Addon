@@ -22,6 +22,12 @@
 
 **ES** — En el reino Stormrage, *Perfiles de talentos* (en el menú, con `/perfiles` o con la pestaña del emblema de doble especialización en la ventana de talentos) guarda tu spec activa (talentos, glifos y barras) con un nombre y la vuelve a cargar sobre tu spec activa cuando quieras. *Nueva spec en blanco* reinicia gratis los talentos de la spec activa, para armar un perfil nuevo sin pagarle al entrenador. El cliente conserva sus dos specs; los perfiles son una biblioteca encima de ellas, guardada en el reino. Habla con el servidor por el canal de comandos de addon de AzerothCore (`.perfil` de `mod-stormrage-loadouts`), así que no aparece nada en el chat. En otros reinos la ventana solo avisa que el reino no tiene perfiles.
 
+## Arena 1v1
+
+**EN** — The realm's 1v1 arena (`mod-1v1-arena`) uses an arena slot the 3.3.5a client never shows. *Arena 1v1* (in the menu, `/1v1`, or the challenge tab on the PvP window) asks the realm for your `.q1v1 stats` through the same addon channel and shows your rating, rank, and this week's and the season's record, with buttons for the unrated and rated queues. It refreshes by itself after each loading screen, so after an arena the new rating is already there.
+
+**ES** — La arena 1v1 del reino (`mod-1v1-arena`) usa un hueco de arena que el cliente 3.3.5a nunca muestra. *Arena 1v1* (en el menú, con `/1v1` o con la pestaña del desafío en la ventana de JcJ) le pide al reino tus `.q1v1 stats` por el mismo canal de addon y muestra tu índice, tu puesto y tus victorias y derrotas de la semana y de la temporada, con botones para la cola sin puntuar y la puntuada. Se actualiza sola tras cada pantalla de carga, así que al salir de una arena ya ves el índice nuevo.
+
 ## For addon authors / Para autores de addons
 
 Any addon can join the menu. Add `## OptionalDeps: Stormrage` to your `.toc` and, once your saved variables are loaded:

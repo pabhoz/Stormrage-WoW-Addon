@@ -101,6 +101,7 @@ function SendAddonMessage(prefix, msg, channel, target)
 end
 
 dofile("Stormrage.lua")
+dofile("Channel.lua")
 dofile("Loadouts.lua")
 
 local L = Stormrage.Loadouts

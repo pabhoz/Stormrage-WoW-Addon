@@ -7,10 +7,8 @@
 -- loaded over the active spec. The client keeps its two native specs; this is a
 -- library on top of them.
 --
--- It talks to the server through AzerothCore's addon command channel: an addon
--- whisper to oneself with prefix "AzerothCore" and body "i" .. 4-char id .. command.
--- The server answers on the same prefix: "m" .. id .. line for each message, then
--- "o" .. id (done) or "f" .. id (failed). Nothing is printed in the chat.
+-- It talks to the server through AzerothCore's addon command channel (Channel.lua),
+-- so nothing is printed in the chat.
 
 local L = Stormrage.L
 local locale = GetLocale()
@@ -28,7 +26,6 @@ if locale == "esES" or locale == "esMX" then
 	L["Profile name"] = "Nombre del perfil"
 	L["No profiles yet. Type a name and save your active spec."] = "Aun no tienes perfiles. Escribe un nombre y guarda tu spec activa."
 	L["Asking the realm..."] = "Consultando al reino..."
-	L["The realm did not answer."] = "El reino no respondio."
 	L["This realm has no talent profiles."] = "Este reino no tiene perfiles de talentos."
 	L["Name: 1 to 24 letters, numbers, spaces, '-' or '_'."] = "Nombre: de 1 a 24 letras, numeros, espacios, '-' o '_'."
 	L["Load |cff00ff00%s|r into your %s spec?\n\nThe talents, glyphs and bars of that spec are replaced. Save them first if you want to keep them."] =
@@ -47,49 +44,17 @@ end
 local Loadouts = {}
 Stormrage.Loadouts = Loadouts
 
-local PREFIX = "AzerothCore"
-local TIMEOUT = 6
 local MAX_ROWS = 10
 -- The emblem of the native dual spec ("Activate Primary/Secondary Spec"): players read it as switching specs.
 local ICON = "Interface\\Icons\\Achievement_General"
 local WIDTH = 380
 
 local profiles, maxProfiles = {}, 0
-local pending, counter = {}, 0
 
 ---------------------------------------------------------------- server channel
 
--- Sends a command (without the dot); done(ok, lines) runs with the server's answer.
-local function Request(command, done)
-	counter = (counter % 9999) + 1
-	local id = ("%04d"):format(counter)
-	pending[id] = { lines = {}, done = done, at = GetTime() }
-	SendAddonMessage(PREFIX, "i" .. id .. command, "WHISPER", UnitName("player"))
-end
+local Request = Stormrage.Request
 Loadouts.Request = Request
-
-local function OnAddonMessage(prefix, msg, _, sender)
-	if prefix ~= PREFIX or sender ~= UnitName("player") then return end
-	local op, id, body = msg:sub(1, 1), msg:sub(2, 5), msg:sub(6)
-	local p = pending[id]
-	if not p then return end
-	if op == "m" then
-		p.lines[#p.lines + 1] = body
-	elseif op == "o" or op == "f" then
-		pending[id] = nil
-		p.done(op == "o", p.lines)
-	end
-end
-
-local function CheckTimeouts()
-	local now = GetTime()
-	for id, p in pairs(pending) do
-		if now - p.at > TIMEOUT then
-			pending[id] = nil
-			p.done(false, { L["The realm did not answer."] }, true)
-		end
-	end
-end
 
 ---------------------------------------------------------------- helpers
 
@@ -412,7 +377,7 @@ local function CreateWindow()
 	local elapsed = 0
 	frame:SetScript("OnUpdate", function(_, dt)
 		elapsed = elapsed + dt
-		if elapsed > 1 then elapsed = 0 CheckTimeouts() end
+		if elapsed > 1 then elapsed = 0 Stormrage.CheckRequests() end
 	end)
 	frame:Hide()
 	tinsert(UISpecialFrames, "StormrageLoadoutsFrame")
@@ -471,14 +436,11 @@ end
 ---------------------------------------------------------------- events, slash and hub
 
 local events = CreateFrame("Frame")
-events:RegisterEvent("CHAT_MSG_ADDON")
 events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 events:RegisterEvent("PLAYER_TALENT_UPDATE")
 events:SetScript("OnEvent", function(_, event, ...)
-	if event == "CHAT_MSG_ADDON" then
-		OnAddonMessage(...)
-	elseif event == "ADDON_LOADED" then
+	if event == "ADDON_LOADED" then
 		if ... == "Blizzard_TalentUI" then AttachToTalentFrame() end
 	elseif frame and frame:IsShown() then
 		UpdateHeader()
