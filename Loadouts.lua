@@ -37,6 +37,11 @@ if locale == "esES" or locale == "esMX" then
 	L["Replace the profile |cff00ff00%s|r with your active spec?"] = "Reemplazar el perfil |cff00ff00%s|r con tu spec activa?"
 	L["no talents"] = "sin talentos"
 	L["Stormrage talent profiles"] = "Perfiles de talentos de Stormrage"
+	L["New blank spec"] = "Nueva spec en blanco"
+	L["Resets your active spec's talents for free, so you can build a new one and save it."] =
+		"Reinicia gratis los talentos de tu spec activa, para armar una nueva y guardarla."
+	L["Reset the talents of your %s spec for free and start a new one?\n\nThe current talents are lost unless you saved them. Glyphs and bars stay as they are."] =
+		"Reiniciar gratis los talentos de tu spec %s y empezar una nueva?\n\nLos talentos actuales se pierden si no los guardaste. Los glifos y las barras se quedan como estan."
 end
 
 local Loadouts = {}
@@ -45,7 +50,8 @@ Stormrage.Loadouts = Loadouts
 local PREFIX = "AzerothCore"
 local TIMEOUT = 6
 local MAX_ROWS = 10
-local ICON = "Interface\\Icons\\Ability_Stealth"
+-- The emblem of the native dual spec ("Activate Primary/Secondary Spec"): players read it as switching specs.
+local ICON = "Interface\\Icons\\Achievement_General"
 local WIDTH = 380
 
 local profiles, maxProfiles = {}, 0
@@ -169,7 +175,7 @@ local function SetBusy(busy)
 	for _, r in ipairs(rows) do
 		if busy then r.load:Disable() r.delete:Disable() else r.load:Enable() r.delete:Enable() end
 	end
-	if busy then frame.save:Disable() else frame.save:Enable() end
+	if busy then frame.save:Disable() frame.blank:Disable() else frame.save:Enable() frame.blank:Enable() end
 end
 
 local function UpdateHeader()
@@ -200,7 +206,7 @@ local function Layout()
 	local listHeight = math.max(shown, 1) * 36
 	frame.form:ClearAllPoints()
 	frame.form:SetPoint("TOPLEFT", frame, "TOPLEFT", 14, -80 - listHeight - 8)
-	frame:SetHeight(80 + listHeight + 8 + 80)
+	frame:SetHeight(80 + listHeight + 8 + 108)
 end
 
 -- Asks the server for the list; `after` (optional) keeps the status of the action that triggered it.
@@ -234,6 +240,7 @@ end
 function Loadouts.Load(name) Action("perfil cargar " .. name) end
 function Loadouts.Delete(name) Action("perfil borrar " .. name) end
 function Loadouts.Save(name) Action("perfil guardar " .. name) end
+function Loadouts.Blank() Action("perfil vaciar") end
 
 StaticPopupDialogs["STORMRAGE_LOADOUT_LOAD"] = {
 	text = "%s", button1 = YES, button2 = NO,
@@ -244,6 +251,11 @@ StaticPopupDialogs["STORMRAGE_LOADOUT_DELETE"] = {
 	text = "%s", button1 = YES, button2 = NO,
 	OnAccept = function(_, name) Loadouts.Delete(name) end,
 	timeout = 0, whileDead = 1, hideOnEscape = 1,
+}
+StaticPopupDialogs["STORMRAGE_LOADOUT_BLANK"] = {
+	text = "%s", button1 = YES, button2 = NO,
+	OnAccept = function() Loadouts.Blank() end,
+	timeout = 0, whileDead = 1, hideOnEscape = 1, showAlert = 1,
 }
 StaticPopupDialogs["STORMRAGE_LOADOUT_REPLACE"] = {
 	text = "%s", button1 = YES, button2 = NO,
@@ -363,7 +375,7 @@ local function CreateWindow()
 
 	-- the save form, placed under the list by Layout
 	frame.form = CreateFrame("Frame", nil, frame)
-	frame.form:SetSize(WIDTH - 28, 70)
+	frame.form:SetSize(WIDTH - 28, 98)
 	local label = frame.form:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 	label:SetPoint("TOPLEFT", 0, 0)
 	label:SetText(L["Profile name"])
@@ -377,8 +389,22 @@ local function CreateWindow()
 	frame.save = Button(frame.form, L["Save active spec"], 150)
 	frame.save:SetPoint("LEFT", frame.input, "RIGHT", 8, 0)
 	frame.save:SetScript("OnClick", SaveTyped)
+	-- A new profile starts from empty talents: without this the only way there is the trainer's paid reset.
+	frame.blank = Button(frame.form, L["New blank spec"], 170)
+	frame.blank:SetPoint("TOPLEFT", frame.input, "BOTTOMLEFT", -6, -6)
+	frame.blank:SetScript("OnClick", function()
+		Confirm("STORMRAGE_LOADOUT_BLANK", L["Reset the talents of your %s spec for free and start a new one?\n\nThe current talents are lost unless you saved them. Glyphs and bars stay as they are."]
+			:format(SpecName(GetActiveTalentGroup()):lower()))
+	end)
+	frame.blank:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:AddLine(L["New blank spec"])
+		GameTooltip:AddLine(L["Resets your active spec's talents for free, so you can build a new one and save it."], 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	frame.blank:SetScript("OnLeave", GameTooltip_Hide)
 	frame.status = frame.form:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-	frame.status:SetPoint("TOPLEFT", frame.input, "BOTTOMLEFT", -6, -8)
+	frame.status:SetPoint("TOPLEFT", frame.blank, "BOTTOMLEFT", 0, -8)
 	frame.status:SetPoint("RIGHT", 0, 0)
 	frame.status:SetJustifyH("LEFT")
 

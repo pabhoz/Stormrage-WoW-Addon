@@ -87,6 +87,8 @@ function SendAddonMessage(prefix, msg, channel, target)
 		local name = cmd:match("^perfil borrar (.+)$")
 		for i, p in ipairs(realm.profiles) do if p == name then table.remove(realm.profiles, i) end end
 		m("Perfil '" .. name .. "' borrado.")
+	elseif cmd == "perfil vaciar" then
+		m("Talentos de tu spec primaria reiniciados, gratis.")
 	elseif cmd:match("^perfil cargar ") then
 		m("Espera 12 segundos antes de cargar otro perfil.") ok = false
 	end
@@ -157,6 +159,14 @@ local dialog = popups[#popups]
 check(dialog.which == "STORMRAGE_LOADOUT_LOAD" and dialog.data == "Raid" and dialog.text:match("primaria"), "load asks for confirmation naming the active spec")
 StaticPopupDialogs.STORMRAGE_LOADOUT_LOAD.OnAccept(dialog, dialog.data)
 check(sent[#sent - 1].msg:match("perfil cargar Raid$") and frame.status.text:match("Espera"), "load runs and shows the realm's answer")
+
+-- a new blank spec asks first, naming the active spec, then resets it on the realm
+before = #sent
+frame.blank.scripts.OnClick(frame.blank)
+dialog = popups[#popups]
+check(#sent == before and dialog.which == "STORMRAGE_LOADOUT_BLANK" and dialog.text:match("primaria"), "blank spec asks for confirmation naming the active spec")
+StaticPopupDialogs.STORMRAGE_LOADOUT_BLANK.OnAccept(dialog, dialog.data)
+check(sent[#sent - 1].msg:match("perfil vaciar$") and frame.status.text:match("reiniciados"), "blank spec runs and shows the realm's answer")
 
 -- delete
 row.delete.scripts.OnClick(row.delete)
