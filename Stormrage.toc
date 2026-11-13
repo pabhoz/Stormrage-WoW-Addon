@@ -1,10 +1,10 @@
 ## Interface: 30300
 ## Title: Stormrage
-## Notes: One minimap button for every Stormrage addon (Soulstone, Smart Cast, Tactics Coach...), plus the realm's talent profiles and 1v1 arena rating.
-## Notes-esES: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...), los perfiles de talentos y el indice de arena 1v1 del reino.
-## Notes-esMX: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...), los perfiles de talentos y el indice de arena 1v1 del reino.
+## Notes: One minimap button for every Stormrage addon (Soulstone, Smart Cast, Tactics Coach...), plus the realm's talent profiles, 1v1 arena rating and flying mount.
+## Notes-esES: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...), los perfiles de talentos, el indice de arena 1v1 y la montura de vuelo del reino.
+## Notes-esMX: Un solo boton en el minimapa para todos los addons de Stormrage (Soulstone, Smart Cast, Tactics Coach...), los perfiles de talentos, el indice de arena 1v1 y la montura de vuelo del reino.
 ## Author: pabhoz
-## Version: 1.1.0
+## Version: 1.2.0
 ## X-License: GPL-3.0-or-later
 ## X-Website: https://github.com/pabhoz/Stormrage-WoW-Addon
 ## SavedVariables: StormrageHubDB
@@ -12,3 +12,4 @@ Stormrage.lua
 Channel.lua
 Loadouts.lua
 Arena.lua
+Flight.lua

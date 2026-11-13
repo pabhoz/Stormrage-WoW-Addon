@@ -28,6 +28,12 @@
 
 **ES** — La arena 1v1 del reino (`mod-1v1-arena`) usa un hueco de arena que el cliente 3.3.5a nunca muestra. *Arena 1v1* (en el menú, con `/1v1` o con la pestaña del desafío en la ventana de JcJ) le pide al reino tus `.q1v1 stats` por el mismo canal de addon y muestra tu índice, tu puesto y tus victorias y derrotas de la semana y de la temporada, con botones para la cola sin puntuar y la puntuada. Se actualiza sola tras cada pantalla de carga, así que al salir de una arena ya ves el índice nuevo.
 
+## Flying mount in Azeroth / Montura de vuelo en Azeroth
+
+**EN** — On the Stormrage realm a flying mount takes off in Kalimdor and the Eastern Kingdoms through the realm's own spell, *Wings of the Damned* (`mod-azeroth-flight`). Choose which mount it uses where mounts already are: open the Mounts tab of the character window (or `/vuelo`, or the menu), select a flying mount and press *Use in Azeroth*. A line on the model says which mount the spell uses now. It asks the realm through the same addon channel (`.volar lista`, `.volar elegir`) and never mounts you by itself.
+
+**ES** — En el reino Stormrage una montura voladora despega en Kalimdor y los Reinos del Este con el hechizo propio del reino, *Alas de los Condenados* (`mod-azeroth-flight`). Elige cuál usa donde ya están tus monturas: abre la pestaña Monturas de la ventana de personaje (o `/vuelo`, o el menú), selecciona una voladora y pulsa *Usar en Azeroth*. Una línea sobre el modelo dice cuál usa ahora el hechizo. Le pregunta al reino por el mismo canal de addon (`.volar lista`, `.volar elegir`) y nunca te monta por su cuenta.
+
 ## For addon authors / Para autores de addons
 
 Any addon can join the menu. Add `## OptionalDeps: Stormrage` to your `.toc` and, once your saved variables are loaded:
